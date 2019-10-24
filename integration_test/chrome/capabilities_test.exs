@@ -2,7 +2,7 @@ defmodule Wallaby.Integration.CapabilitiesTest do
   use ExUnit.Case
   use Wallaby.DSL
   alias Wallaby.Integration.SessionCase
-  alias Wallaby.Experimental.Selenium.WebdriverClient
+  alias Wallaby.WebdriverClient
 
   setup do
     on_exit(fn ->

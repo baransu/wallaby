@@ -1,4 +1,4 @@
-defmodule Wallaby.Experimental.Chrome do
+defmodule Wallaby.Chrome do
   @moduledoc """
   The Chrome driver uses [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) to power Google Chrome and Chromium.
 
@@ -109,8 +109,8 @@ defmodule Wallaby.Experimental.Chrome do
   @chromedriver_version_regex ~r/^ChromeDriver (\d+)\.(\d+)/
 
   alias Wallaby.{DependencyError, Metadata}
-  alias Wallaby.Experimental.Chrome.{Chromedriver}
-  alias Wallaby.Experimental.Selenium.WebdriverClient
+  alias Wallaby.Chrome.{Chromedriver}
+  alias Wallaby.WebdriverClient
   import Wallaby.Driver.LogChecker
 
   @typedoc """
@@ -137,7 +137,7 @@ defmodule Wallaby.Experimental.Chrome do
   @doc false
   def init(:ok) do
     children = [
-      worker(Wallaby.Experimental.Chrome.Chromedriver, []),
+      worker(Wallaby.Chrome.Chromedriver, []),
       worker(Wallaby.Driver.LogStore, [[]])
     ]
 
@@ -276,7 +276,7 @@ defmodule Wallaby.Experimental.Chrome do
   @doc false
   defdelegate dismiss_prompt(session, fun), to: WebdriverClient
   @doc false
-  defdelegate parse_log(log), to: Wallaby.Experimental.Chrome.Logger
+  defdelegate parse_log(log), to: Wallaby.Chrome.Logger
 
   @doc false
   def window_handle(session), do: delegate(:window_handle, session)

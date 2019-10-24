@@ -1,9 +1,9 @@
-defmodule Wallaby.Experimental.Chrome.Chromedriver do
+defmodule Wallaby.Chrome.Chromedriver do
   @moduledoc false
   use GenServer
 
   alias Wallaby.Driver.Utils
-  alias Wallaby.Experimental.Chrome
+  alias Wallaby.Chrome
 
   def start_link do
     GenServer.start_link(__MODULE__, :ok, [name: __MODULE__])

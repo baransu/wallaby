@@ -1,7 +1,7 @@
-defmodule Wallaby.Experimental.Selenium.WebdriverClientTest do
+defmodule Wallaby.WebdriverClientTest do
   use Wallaby.HttpClientCase, async: true
 
-  alias Wallaby.Experimental.Selenium.WebdriverClient, as: Client
+  alias Wallaby.WebdriverClient, as: Client
   alias Wallaby.{Element, Query, Session}
 
   @web_element_identifier "element-6066-11e4-a52e-4f735466cecf"
@@ -82,7 +82,7 @@ defmodule Wallaby.Experimental.Selenium.WebdriverClientTest do
         parent: session,
         session_url: session.url,
         url: "#{session.url}/element/#{element_id}",
-        driver: Wallaby.Experimental.Selenium,
+        driver: Wallaby.Selenium,
       }
     end
 
@@ -110,7 +110,7 @@ defmodule Wallaby.Experimental.Selenium.WebdriverClientTest do
         parent: parent_element,
         session_url: session.url,
         url: "#{session.url}/element/#{element_id}",
-        driver: Wallaby.Experimental.Selenium,
+        driver: Wallaby.Selenium,
       }
     end
 
@@ -137,7 +137,7 @@ defmodule Wallaby.Experimental.Selenium.WebdriverClientTest do
         parent: session,
         session_url: session.url,
         url: "#{session.url}/element/#{element_id}",
-        driver: Wallaby.Experimental.Selenium,
+        driver: Wallaby.Selenium,
       }
     end
   end
@@ -1098,12 +1098,12 @@ defmodule Wallaby.Experimental.Selenium.WebdriverClientTest do
   defp build_session_for_bypass(bypass, session_id \\ "my-sample-session") do
     session_url = bypass_url(bypass, "/session/#{session_id}")
 
-    %Session{driver: Wallaby.Experimental.Selenium, id: session_id, session_url: session_url, url: session_url}
+    %Session{driver: Wallaby.Selenium, id: session_id, session_url: session_url, url: session_url}
   end
 
   defp build_element_for_session(session, element_id \\ ":wdc:abc123") do
     %Element{
-      driver: Wallaby.Experimental.Selenium,
+      driver: Wallaby.Selenium,
       id: element_id,
       parent: session,
       session_url: session.url,

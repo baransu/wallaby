@@ -1,7 +1,7 @@
-defmodule Wallaby.Experimental.SeleniumTest do
+defmodule Wallaby.SeleniumTest do
   use ExUnit.Case, async: true
 
-  alias Wallaby.Experimental.Selenium
+  alias Wallaby.Selenium
 
   describe "start_session/1" do
     test "starts a selenium session with the default url" do
@@ -20,7 +20,7 @@ defmodule Wallaby.Experimental.SeleniumTest do
         url: "http://localhost:4444/wd/hub/session/#{session_id}",
         id: session_id,
         server: :none,
-        driver: Wallaby.Experimental.Selenium
+        driver: Wallaby.Selenium
       }
 
       assert_received {:fn_called, ["http://localhost:4444/wd/hub/", %{javascriptEnabled: true}]}
@@ -58,7 +58,7 @@ defmodule Wallaby.Experimental.SeleniumTest do
       session_url: "http://localhost:4444/wd/hub/session/#{session_id}",
       url: "http://localhost:4444/wd/hub/session/#{session_id}",
       id: session_id,
-      driver: Wallaby.Experimental.Selenium
+      driver: Wallaby.Selenium
     }
   end
 
