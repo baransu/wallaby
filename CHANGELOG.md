@@ -7,9 +7,15 @@
 - Enables the ability to set capabilities by passing them as an option and using application configuration.
 - Implements default capabilities for Selenium.
 
+### Deprecations
+
+- Deprecated the PhantomJS driver. Users should switch to the Chrome or Selenium driver.
+
 #### Breaking
 
 - Moves configuration options for using chrome headlessly, the chrome binary, and the chromedriver binary to the `:chromedriver` key in the `:wallaby` application config.
+- `Wallaby.Experimental.Chrome` renamed to `Wallaby.Chrome`.
+- `Wallaby.Experimental.Selenium` renamed to `Wallaby.Selenium`.
 
 ## 0.23.0 (2019-08-14)
 
