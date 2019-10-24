@@ -109,7 +109,7 @@ defmodule Wallaby do
   end
 
   def driver do
-    driver = 
+    driver =
       case System.get_env("WALLABY_DRIVER") do
         "chrome" ->
           Wallaby.Chrome
