@@ -91,7 +91,8 @@ defmodule Wallaby.Experimental.Chrome do
       user_agent()
       |> Metadata.append(opts[:metadata])
 
-    capabilities = capabilities(user_agent: user_agent)
+    capabilities =
+      capabilities(user_agent: user_agent, user_data_dir: opts |> Keyword.get(:user_data_dir))
 
     with {:ok, response} <- create_session_fn.(base_url, capabilities) do
       id = response["sessionId"]
@@ -282,29 +283,13 @@ defmodule Wallaby.Experimental.Chrome do
   end
 
   defp chrome_args(opts) do
-    default_chrome_args()
+    default_chrome_args(opts)
     |> Enum.concat(headless_args())
     |> Enum.concat(user_agent_arg(opts[:user_agent]))
-    |> Enum.concat(user_data_dir_arg())
   end
 
   defp user_agent_arg(nil), do: []
   defp user_agent_arg(ua), do: ["--user-agent=#{ua}"]
-
-  defp user_data_dir_arg() do
-    dir =
-      :wallaby
-      |> Application.get_env(:chrome, [])
-      |> Keyword.get(:user_data_dir)
-
-    case dir do
-      nil ->
-        []
-
-      user_data_dir ->
-        ["--user-data-dir=#{user_data_dir}"]
-    end
-  end
 
   defp headless? do
     :wallaby
@@ -318,12 +303,17 @@ defmodule Wallaby.Experimental.Chrome do
     |> Keyword.get(:binary)
   end
 
-  def default_chrome_args do
-    [
+  def default_chrome_args(opts) do
+    base = [
       "--no-sandbox",
       "window-size=1280,800",
       "--disable-gpu"
     ]
+
+    case opts |> Keyword.get(:user_data_dir) do
+      nil -> base
+      user_data_dir -> ["--user-data-dir=#{user_data_dir}" | base]
+    end
   end
 
   defp headless_args do
