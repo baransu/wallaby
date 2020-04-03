@@ -27,31 +27,31 @@ defmodule Wallaby.Experimental.Chrome do
 
   def validate do
     with {:ok, executable} <- find_chromedriver_executable() do
-        {version, 0} = System.cmd(executable, ["--version"])
+      {version, 0} = System.cmd(executable, ["--version"])
 
-        @chromedriver_version_regex
-        |> Regex.run(version)
-        |> Enum.drop(1)
-        |> Enum.map(&String.to_integer/1)
-        |> version_check()
+      @chromedriver_version_regex
+      |> Regex.run(version)
+      |> Enum.drop(1)
+      |> Enum.map(&String.to_integer/1)
+      |> version_check()
     end
   end
 
   def find_chromedriver_executable do
     with {:error, :not_found} <-
-            :wallaby
-            |> Application.get_env(:chromedriver, "")
-            |>  Path.expand()
-            |> do_find_chromedriver(),
+           :wallaby
+           |> Application.get_env(:chromedriver, "")
+           |> Path.expand()
+           |> do_find_chromedriver(),
          {:error, :not_found} <- do_find_chromedriver("chromedriver") do
-        exception =
-          DependencyError.exception("""
-          Wallaby can't find chromedriver. Make sure you have chromedriver installed
-          and included in your path.
-          You can also provide a path using `config :wallaby, chromedriver: <path>`.
-          """)
+      exception =
+        DependencyError.exception("""
+        Wallaby can't find chromedriver. Make sure you have chromedriver installed
+        and included in your path.
+        You can also provide a path using `config :wallaby, chromedriver: <path>`.
+        """)
 
-        {:error, exception}
+      {:error, exception}
     end
   end
 
@@ -69,7 +69,7 @@ defmodule Wallaby.Experimental.Chrome do
   end
 
   defp version_check([major_version, minor_version])
-    when major_version == 2 and minor_version >= 30 do
+       when major_version == 2 and minor_version >= 30 do
     :ok
   end
 
@@ -154,6 +154,7 @@ defmodule Wallaby.Experimental.Chrome do
   @doc false
   def set_window_size(session, width, height),
     do: delegate(:set_window_size, session, [width, height])
+
   @doc false
   def get_window_position(session), do: delegate(:get_window_position, session)
   @doc false
@@ -193,7 +194,9 @@ defmodule Wallaby.Experimental.Chrome do
   @doc false
   def hover(element), do: delegate(:move_mouse_to, element, [element])
   @doc false
-  def move_mouse_by(parent, x_offset, y_offset), do: delegate(:move_mouse_to, parent, [nil, x_offset, y_offset])
+  def move_mouse_by(parent, x_offset, y_offset),
+    do: delegate(:move_mouse_to, parent, [nil, x_offset, y_offset])
+
   @doc false
   def clear(element), do: delegate(:clear, element)
   @doc false
@@ -282,10 +285,26 @@ defmodule Wallaby.Experimental.Chrome do
     default_chrome_args()
     |> Enum.concat(headless_args())
     |> Enum.concat(user_agent_arg(opts[:user_agent]))
+    |> Enum.concat(user_data_dir_arg())
   end
 
   defp user_agent_arg(nil), do: []
   defp user_agent_arg(ua), do: ["--user-agent=#{ua}"]
+
+  defp user_data_dir_arg() do
+    dir =
+      :wallaby
+      |> Application.get_env(:chrome, [])
+      |> Keyword.get(:user_data_dir)
+
+    case dir do
+      nil ->
+        []
+
+      user_data_dir ->
+        ["--user-data-dir=#{user_data_dir}"]
+    end
+  end
 
   defp headless? do
     :wallaby
