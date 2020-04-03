@@ -248,7 +248,7 @@ defmodule Wallaby.Experimental.Chrome do
 
   @doc false
   def user_agent do
-    "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
   end
 
   defp capabilities(opts) do
